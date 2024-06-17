@@ -1,6 +1,10 @@
 import os
+from os import listdir 
+from os.path import isfile, join
+
 import argparse
 import torch
+import pandas as pd
 from transformers import T5Tokenizer, T5ForConditionalGeneration
 from transformers import Trainer, TrainingArguments
 from torch.utils.data import Dataset
@@ -33,45 +37,48 @@ The training data should contains source and target in each line, which should b
 '''
 
 hf_model = 'ai-forever/ruT5-large'
-my_model = './checkpoint-00'
 
 
 
-train_data_path = os.path.join(os.getcwd(), "examples", "queries_answers_dataset_not_lem_test.txt")
 
-parser = argparse.ArgumentParser(description='Train docTquery on more datasets')
-learned_model_path = os.path.join(os.getcwd(), "great_validator")
-parser.add_argument('--pretrained_model_path', default=hf_model, help='pretrained model path')
-parser.add_argument('--train_data_path', default=train_data_path, required=False, help='training data path')
-parser.add_argument('--output_path', default=learned_model_path, required=False, help='output directory path')
-parser.add_argument('--epoch', default=1, type=int)
-parser.add_argument('--batch_size', default=1, type=int)
-parser.add_argument('--weight_decay', default=5e-5, type=float)
-parser.add_argument('--lr', default=3e-5, type=float)
-parser.add_argument('--gra_acc_steps', default=8, type=int)
-# parser.add_argument('--vocab_size', default=40000, type=int)
-args = parser.parse_args()
+data_path = os.path.join(os.getcwd(), "datasets")
+datasets_file_names = [f for f in listdir(data_path) if isfile(join(data_path, f))]
 
-model = T5ForConditionalGeneration.from_pretrained(args.pretrained_model_path).to('cuda')
-train_dataset = TrainerDataset(args.train_data_path)
+for fn in datasets_file_names:
+    train_data_path = os.path.join(os.getcwd(), "datasets", fn)
+    parser = argparse.ArgumentParser(description='Train docTquery on more datasets')
+    learned_model_path = os.path.join(os.getcwd(), "great_validator")
+    parser.add_argument('--pretrained_model_path', default=hf_model, help='pretrained model path')
+    parser.add_argument('--train_data_path', default=train_data_path, required=False, help='training data path')
+    parser.add_argument('--output_path', default=learned_model_path, required=False, help='output directory path')
+    parser.add_argument('--epoch', default=1, type=int)
+    parser.add_argument('--batch_size', default=1, type=int)
+    parser.add_argument('--weight_decay', default=5e-5, type=float)
+    parser.add_argument('--lr', default=3e-5, type=float)
+    parser.add_argument('--gra_acc_steps', default=8, type=int)
+    # parser.add_argument('--vocab_size', default=40000, type=int)
+    args = parser.parse_args()
 
-training_args = TrainingArguments(
-    output_dir=args.output_path,
-    overwrite_output_dir=True,
-    num_train_epochs=args.epoch,
-    per_device_train_batch_size=args.batch_size,
-    weight_decay=args.weight_decay,
-    save_steps=1000,
-    learning_rate=args.lr,
-    gradient_accumulation_steps=args.gra_acc_steps,
-    logging_dir='./logs',
-)
+    model = T5ForConditionalGeneration.from_pretrained(args.pretrained_model_path).to('cuda')
+    train_dataset = TrainerDataset(args.train_data_path)
 
-trainer = Trainer(
-    model=model,
-    args=training_args,
-    train_dataset=train_dataset
-)
+    training_args = TrainingArguments(
+        output_dir=args.output_path,
+        overwrite_output_dir=True,
+        num_train_epochs=args.epoch,
+        per_device_train_batch_size=args.batch_size,
+        weight_decay=args.weight_decay,
+        save_steps=1000,
+        learning_rate=args.lr,
+        gradient_accumulation_steps=args.gra_acc_steps,
+        logging_dir='./logs',
+    )
 
-trainer.train()
-trainer.save_model()
+    trainer = Trainer(
+        model=model,
+        args=training_args,
+        train_dataset=train_dataset
+    )
+
+    trainer.train()
+    trainer.save_model()

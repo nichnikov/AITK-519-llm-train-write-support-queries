@@ -1,0 +1,4 @@
+1-ый тренировочный датасет: 
+{'loss': 0.0007, 'learning_rate': 1.8687782805429865e-05, 'epoch': 1.13}
+{'loss': 0.0002, 'learning_rate': 7.375565610859728e-06, 'epoch': 2.26}
+{'train_runtime': 11093.5434, 'train_samples_per_second': 9.58, 'train_steps_per_second': 0.12, 'train_loss': 0.00034237041125470156, 'epoch': 2.99}

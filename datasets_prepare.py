@@ -52,10 +52,18 @@ for fn in file_names:
     fn_prefix = re.findall(r".*\.", fn)[0]
     print(fn_prefix)
     
-    train_dicts = dataframe_handler(df)
+    all_dicts = dataframe_handler(df)
+    train_size = int(len(all_dicts)*0.9)
+    train_dicts = all_dicts[:train_size]
+    val_dicts = all_dicts[train_size:]
     print("len train_dicts:", len(train_dicts))
+    print("len val_dicts:", len(val_dicts))
 
-    with open(os.path.join("datasets", fn_prefix + "txt"), 'w') as fout_t5:
+    with open(os.path.join("datasets", "train", "train_" + fn_prefix + "txt"), 'w') as fout_t5_train:
         for d in train_dicts:
-            fout_t5.write(f'Query: {d["QueryText"]} Document: {d["Answer"]} Relevant:\t{d["label"]}\n')
+            fout_t5_train.write(f'Query: {d["QueryText"]} Document: {d["Answer"]} Relevant:\t{d["label"]}\n')
+
+    with open(os.path.join("datasets", "val", "val_" + fn_prefix + "txt"), 'w') as fout_t5_val:
+        for d in val_dicts:
+            fout_t5_val.write(f'Query: {d["QueryText"]} Document: {d["Answer"]} Relevant:\t{d["label"]}\n')
 

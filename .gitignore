@@ -160,5 +160,7 @@ cython_debug/
 #.idea/
 data/
 datasets/
+datasets_old/
 t5_validator/
+t5_validators/
 nohup.out

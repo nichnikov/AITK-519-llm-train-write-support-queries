@@ -1,5 +1,5 @@
 import os, re
-from os import listdir 
+from os import listdir
 from os.path import isfile, join
 from random import shuffle
 from math import sqrt
@@ -20,7 +20,7 @@ def dataframe_handler(df: pd.DataFrame) -> dict:
 
 
     #вопрос\nнаша
-    patterns = re.compile(r"\\n|\n|&nbsp;|\\t|\t|&laquo;|&ndash;|\s+")
+    patterns = re.compile(r"\\n|\n|&nbsp;|\\t|\t|&laquo;|&ndash;|&raquo;|\s+")
 
     df_train["Answer"] = df_train["Answer"].apply(lambda x: patterns.sub(" ", x))
     df_train["Answer"] = df_train["Answer"].apply(lambda x: re.sub(r"\s+", " ", x))

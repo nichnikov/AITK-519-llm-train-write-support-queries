@@ -30,7 +30,7 @@ def t5_validate(query: str, answer: str, score: float, **kwards):
 
 if __name__ == "__main__":
     t5_tokenizer = T5Tokenizer.from_pretrained('ai-forever/ruT5-large')
-    t5_model = T5ForConditionalGeneration.from_pretrained(os.path.join("t5_validators", 't5_validator_240621')).to("cuda")
+    t5_model = T5ForConditionalGeneration.from_pretrained(os.path.join("t5_validators", 't5_validator_240628')).to("cuda")
     # t5_model = T5ForConditionalGeneration.from_pretrained(os.path.join("t5_validators", 'models_bss')).to("cuda")
 
     prmtrs = {"t5_tkz": t5_tokenizer, 
@@ -61,6 +61,6 @@ if __name__ == "__main__":
 
     results_df = pd.DataFrame(results)
     print(results_df)
-    results_df.to_csv(os.path.join(os.getcwd(), "test_results", "val_results_WrSupp_" + str(fn) + "_240621" + ".csv"), index=False)
+    results_df.to_csv(os.path.join(os.getcwd(), "test_results", "val_results_WrSupp_" + str(fn) + "_240628" + ".csv"), index=False)
 
     

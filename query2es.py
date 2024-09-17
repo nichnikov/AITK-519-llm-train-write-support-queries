@@ -33,13 +33,16 @@ if __name__ == "__main__":
         print("year:", year)
         df = pd.read_excel(os.path.join(os.getcwd(), "data", fn))
         df_dicts = df.to_dict(orient="records")
-        data_dicts = [dict_handling(d) for d in df_dicts]
+        data_dicts = [dict_handling(d) for d in df_dicts[:20]]
         print("start lematization")
-        for d in data_dicts:
-            d["LemQuery"] = " ".join(tknz([d["ClearQuery"]])[0])
-            d["LemAnswer"] = " ".join(tknz([d["ClearAnswer"]])[0])
+        lem_queries = [" ".join(lm_q) for lm_q in tknz([d["ClearQuery"] for d in data_dicts])]
+        lem_answers = [" ".join(lm_a) for lm_a in tknz([d["ClearAnswer"] for d in data_dicts])]
+        for d, lq, la in zip(data_dicts, lem_queries, lem_answers):
+            d["LemQuery"] = lq
+            d["LemAnswer"] = la
         print("end lematization")
-        print(data_dicts[:10])
+        print("start data sending")
         es.add_docs(wr_index, data_dicts)
+        print("end data sending")
 
     

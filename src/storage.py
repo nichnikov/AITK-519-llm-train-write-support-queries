@@ -53,7 +53,7 @@ class ElasticClient(AsyncElasticsearch):
                 logger.info("impossible create index with name {}".format(index_name))
 
         self.loop.run_until_complete(create(index_name))
-        self.loop.close()
+
 
     def delete_index(self, index_name) -> None:
         """Deletes the index if one exists."""
@@ -118,4 +118,4 @@ class ElasticClient(AsyncElasticsearch):
                     )
                 )
         self.loop.run_until_complete(add_docs_bulk(index_name, docs))
-        self.loop.close()
+        

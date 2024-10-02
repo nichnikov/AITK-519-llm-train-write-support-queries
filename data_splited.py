@@ -9,7 +9,7 @@ def chunks(lst, n):
 
 size = 20000
 # fale_names = ["2020.xlsx", "2021.xlsx", "2022.xlsx", "2023.xlsx", "2024.xlsx"]
-fale_names = ["2020.xlsx"]
+fale_names = ["2024.xlsx"]
 for fn in fale_names:
     year = re.findall(r"\d+", fn)[0]
     print("year:", year)

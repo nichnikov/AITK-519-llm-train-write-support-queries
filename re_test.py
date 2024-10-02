@@ -4,7 +4,7 @@ tx = "Для этого заключите с театром договор бе
 
 r"\.\s+[А-Я].*ссылке:", 
 
-patterns = "|".join(["&nbsp;", "&quot;", "&raquo;", "&mdash;", "&ndash;", "&laquo;", r"\.\s+(?=[А-Я].*ссылке\:)", "(?P<url>https?://[^\s]+)", "\s+"])
+patterns = "|".join(["&nbsp;", "&quot;", "&raquo;", "&mdash;", "&ndash;", "&laquo;", r"\.(\s+[А-Я].*ссылке\:)?", "(?P<url>https?://[^\s]+)", "\s+"])
 print(patterns)
 
 print(tx)
